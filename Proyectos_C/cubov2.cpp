@@ -1,7 +1,9 @@
 #include <iostream>
+#include <fstream>
 using namespace std;
-class Tcubo{   ///Declaracion de Clases
+class Tcubo{
 private:
+
 class cubo{
 private:
 char R[3][3]; //FRONTAL
@@ -12,105 +14,211 @@ char W[3][3];   //SUPERIOR
 char O[3][3];   //TRASERA}
 friend class Tcubo;
 };
-cubo T; // Cubo Auxiliar para guardar el estado anterior
-cubo in; //Cubo inicial
+
+cubo T[100];
+cubo in;
 int a;
 char mov[100][2];
 int cont_mov_mejor;
 public:
 
-void getdatos(){ // OBTENER DATOS DE ENTRADA
-int i,j;
+void Tcubo::predefinido(){
+in.R[0][0]='b'; in.R[0][1]='b'; in.R[0][2]='y'; 
+in.R[1][0]='r'; in.R[1][1]='r'; in.R[1][2]='y'; 
+in.R[2][0]='r'; in.R[2][1]='r'; in.R[2][2]='y';
 
-for (i=0;i<=2;i++){
-  for (j=0;j<=2;j++){   
-    cin>>in.R[i][j];
-    }}
+in.B[0][0]='b'; in.B[0][1]='b'; in.B[0][2]='o'; 
+in.B[1][0]='b'; in.B[1][1]='b'; in.B[1][2]='o'; 
+in.B[2][0]='b'; in.B[2][1]='b'; in.B[2][2]='o';
 
-for (i=0;i<=2;i++){
-  for (j=0;j<=2;j++){   
-    cin>>in.B[i][j];
-    }}
+in.G[0][0]='r'; in.G[0][1]='r'; in.G[0][2]='r'; 
+in.G[1][0]='g'; in.G[1][1]='g'; in.G[1][2]='g'; 
+in.G[2][0]='g'; in.G[2][1]='g'; in.G[2][2]='g';
 
-for (i=0;i<=2;i++){
-  for (j=0;j<=2;j++){   
-    cin>>in.G[i][j];
-    }}
+in.W[0][0]='w'; in.W[0][1]='w'; in.W[0][2]='b'; 
+in.W[1][0]='w'; in.W[1][1]='w'; in.W[1][2]='r'; 
+in.W[2][0]='w'; in.W[2][1]='w'; in.W[2][2]='r';
 
-for (i=0;i<=2;i++){
-  for (j=0;j<=2;j++){   
-    cin>>in.W[i][j];
-    }}
+in.O[0][0]='w'; in.O[0][1]='g'; in.O[0][2]='g'; 
+in.O[1][0]='w'; in.O[1][1]='o'; in.O[1][2]='o'; 
+in.O[2][0]='w'; in.O[2][1]='o'; in.O[2][2]='o';
 
-for (i=0;i<=2;i++){
-  for (j=0;j<=2;j++){   
-    cin>>in.O[i][j];
-    }}
+in.Y[0][0]='y'; in.Y[0][1]='y'; in.Y[0][2]='o'; 
+in.Y[1][0]='y'; in.Y[1][1]='y'; in.Y[1][2]='o'; 
+in.Y[2][0]='y'; in.Y[2][1]='y'; in.Y[2][2]='g';
 
-for (i=0;i<=2;i++){
-  for (j=0;j<=2;j++){   
-    cin>>in.Y[i][j];
-    }}
 }
 //////////////////////////////////////////////////////////////////////////
-void copiar(){ // GUARDAR ESTADO ANTERIOR DEL CUBO EN UN AUXILIAR
+void Tcubo::copiar(){
 int i,j;
 for (i=0;i<=2;i++){
   for (j=0;j<=2;j++){   
-    T.R[i][j]=in.R[i][j];
+    T[0].R[i][j]=in.R[i][j];
     }}
 for (i=0;i<=2;i++){
   for (j=0;j<=2;j++){   
-    T.B[i][j]=in.B[i][j];
+    T[0].B[i][j]=in.B[i][j];
     }}
 for (i=0;i<=2;i++){
    for (j=0;j<=2;j++){   
-    T.G[i][j]=in.G[i][j];
+    T[0].G[i][j]=in.G[i][j];
     }}
 for (i=0;i<=2;i++){
   for (j=0;j<=2;j++){   
-    T.Y[i][j]=in.Y[i][j];
+    T[0].Y[i][j]=in.Y[i][j];
     }}
 for (i=0;i<=2;i++){
  for (j=0;j<=2;j++){   
-    T.W[i][j]=in.W[i][j];
+    T[0].W[i][j]=in.W[i][j];
     }}
 for (i=0;i<=2;i++){
  for (j=0;j<=2;j++){   
-    T.O[i][j]=in.O[i][j];
+    T[0].O[i][j]=in.O[i][j];
     }}     
 }
 
-void anterior(){ // VOLVER A ESTADO ANTERIOR DEL CUBO
+void Tcubo::anterior(){
 int i,j;
 for (i=0;i<=2;i++){
   for (j=0;j<=2;j++){   
-    in.R[i][j]=T.R[i][j];
+    in.R[i][j]=T[0].R[i][j];
     }}
 for (i=0;i<=2;i++){
   for (j=0;j<=2;j++){   
-    in.B[i][j]=T.B[i][j];
+    in.B[i][j]=T[0].B[i][j];
     }}
 for (i=0;i<=2;i++){
    for (j=0;j<=2;j++){   
-    in.G[i][j]=T.G[i][j];
+    in.G[i][j]=T[0].G[i][j];
     }}
 for (i=0;i<=2;i++){
   for (j=0;j<=2;j++){   
-    in.Y[i][j]=T.Y[i][j];
+    in.Y[i][j]=T[0].Y[i][j];
     }}
 for (i=0;i<=2;i++){
  for (j=0;j<=2;j++){   
-    in.W[i][j]=T.W[i][j];
+    in.W[i][j]=T[0].W[i][j];
     }}
 for (i=0;i<=2;i++){
  for (j=0;j<=2;j++){   
-    in.O[i][j]=T.O[i][j];
+    in.O[i][j]=T[0].O[i][j];
     }}     
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-void rotar_cara_interna(int op, int count, int cara){ //ROTAR ALREDEDOR DEL CENTRO DE LA CARA
+//////////////////////
+void Tcubo::marcar(int cont){
+int i,j;
+for (i=0;i<=2;i++){
+  for (j=0;j<=2;j++){   
+    T[cont].R[i][j]=in.R[i][j];
+    }}
+for (i=0;i<=2;i++){
+  for (j=0;j<=2;j++){   
+    T[cont].B[i][j]=in.B[i][j];
+    }}
+for (i=0;i<=2;i++){
+   for (j=0;j<=2;j++){   
+    T[cont].G[i][j]=in.G[i][j];
+    }}
+for (i=0;i<=2;i++){
+  for (j=0;j<=2;j++){   
+    T[cont].Y[i][j]=in.Y[i][j];
+    }}
+for (i=0;i<=2;i++){
+ for (j=0;j<=2;j++){   
+    T[cont].W[i][j]=in.W[i][j];
+    }}
+for (i=0;i<=2;i++){
+ for (j=0;j<=2;j++){   
+    T[cont].O[i][j]=in.O[i][j];
+    }}     
+}
+////////////////////////////////////////////
+bool Tcubo::repetido(int cont){
+int i,j,auxi,aux;
+for (auxi=0;auxi<cont;auxi++){
+for (i=0;i<=2;i++){
+  for (j=0;j<=2;j++){   
+  if  (T[auxi].R[i][j]==in.R[i][j]){aux++;}
+  }}
+if (aux==9){ aux=0;
+for (i=0;i<=2;i++){
+  for (j=0;j<=2;j++){   
+     if  (T[auxi].B[i][j]==in.B[i][j]){aux++;}
+    }}}
+if (aux==9){ aux=0;
+for (i=0;i<=2;i++){
+  for (j=0;j<=2;j++){   
+     if  (T[auxi].G[i][j]==in.G[i][j]){aux++;}
+    }}}
+if (aux==9){ aux=0;
+for (i=0;i<=2;i++){
+  for (j=0;j<=2;j++){   
+     if  (T[auxi].Y[i][j]==in.Y[i][j]){aux++;}
+    }}}
+if (aux==9){ aux=0;
+for (i=0;i<=2;i++){
+  for (j=0;j<=2;j++){   
+     if  (T[auxi].W[i][j]==in.W[i][j]){aux++;}
+    }}}
+if (aux==9){ aux=0;
+for (i=0;i<=2;i++){
+  for (j=0;j<=2;j++){   
+     if  (T[auxi].O[i][j]==in.O[i][j]){aux++;}
+    }}
+if (aux==9){ return true;}
+}}
+return false;
+}
+///////////////////////////////////////////////
+void Tcubo::setdatos(){
+int i,j;
+cout<<"ROJO";
+cout<<endl;
+ for (i=0;i<=2;i++){
+      for (j=0;j<=2;j++){   
+    cout<<T[0].R[i][j];
+    }
+    cout<<endl;
+    }
+    
+    cout<<"AZUL";
+    cout<<endl;
+       for (i=0;i<=2;i++){
+      for (j=0;j<=2;j++){   
+    cout<<T[0].B[i][j];
+    }    cout<<endl;
+    }
+    cout<<"VERDE";
+    cout<<endl;
+       for (i=0;i<=2;i++){
+      for (j=0;j<=2;j++){   
+    cout<<T[0].G[i][j];
+    }    cout<<endl;
+    }
+    cout<<"BLANCO";
+    cout<<endl;
+        for (i=0;i<=2;i++){
+      for (j=0;j<=2;j++){   
+    cout<<T[0].W[i][j];
+    }    cout<<endl;
+    }
+    cout<<"ANARANJADO";
+    cout<<endl;
+       for (i=0;i<=2;i++){
+      for (j=0;j<=2;j++){   
+    cout<<T[0].O[i][j];
+    }    cout<<endl;
+    }
+    cout<<"AMARILLO";
+    cout<<endl;
+       for (i=0;i<=2;i++){
+      for (j=0;j<=2;j++){   
+    cout<<T[0].Y[i][j];
+    }    cout<<endl;
+    }        
+    }
+void Tcubo::rotar_cara_interna(int op, int count, int cara){ //ROTAR ALREDEDOR DEL CENTRO DE LA CARA
 int auxi=2, auxj=0, i, j;
 char aux[3][3];
 if(cara==1){
@@ -326,7 +434,7 @@ if(op==0){
 ////////////////////////////////////////////////////
 }
           }
-void rotar_caras_externas(int op, int cara){ // ROTAR LADOS DE LA CARA
+void Tcubo::rotar_caras_externas(int op, int cara){ // ROTAR LADOS DE LA CARA
 int i, j=2;
 char aux[3][3];
 if(cara==1){    
@@ -518,7 +626,7 @@ j=2;
 }
      }
      
-bool  comprobar(){ //VER SI ES SOLUCION
+bool Tcubo::comprobar(){ //VER SI ES SOLUCION
 int i,j;
 a++;
 for (i=0;i<=2;i++){
@@ -541,61 +649,104 @@ for (i=0;i<=2;i++){
    for (j=0;j<=2;j++){   
        if (in.W[i][j]!='w'){return false;}
     }}
-
+for (i=0;i<=2;i++){
+    for (j=0;j<=2;j++){   
+      if (in.O[i][j]!='o'){return false;}
+    }} 
 return true;
      }
 
-char getmov(int i, int j){char a; a=mov[i][j]; return a;}
-    
+char Tcubo::getmov(int i, int j){char a; a=mov[i][j]; return a;}
+int Tcubo::getcont_mov_mejor(){ return cont_mov_mejor; }     
+void Tcubo::setcont_mov_mejor(int cont){ cont_mov_mejor=cont; }      
 };
 /////////////////////////////////////////////////////
-char mov_mejor[6][2];
-int Mpasos=6;
 
-void  guardar(Tcubo cube,int cont){ ///////// GUARDAR LOS MOVIMIENTOS PARA LLEGAR A LA SOLUCION
+char mov_mejor[100][2];
+int caux=20;
+void  comparar(Tcubo cube,int cont){
 int i,j;
+if(cont<caux){
+cube.setcont_mov_mejor(cont);
+caux=cont;
  for (i=0;i<=cont;i++){  
   for (j=0;j<2;j++){      
     mov_mejor[i][j]=cube.getmov(i,j);
 
     }
     }    
-
+}
 }
 /////////////////////////////////////////////////////////
-void mejor_solucion(){   /// ESCRIBIR LOS MOVIMIENTOS COMO UNA SALIDA
+void mejor_solucion(){
 int i;
- for (i=0;i<=Mpasos;i++){  
-    cout<<mov_mejor[i][0]<<" "<<mov_mejor[i][1];
+cout<<endl;
+cout<<"Movimientos";
+cout<<endl;
+ for (i=0;i<=caux;i++){  
+    cout<<mov_mejor[i][0];
+    cout<<mov_mejor[i][1];
     cout<<endl;
     }
     }
 //////////////////////////////////////////////////////////////
-void resolver(int op, int count, int cara, Tcubo cube, int &Mpasos){ // IMPLEMENTACION DE FUNCION BACKTRAKING
-for(int j=0;j<=1;j++){ // Permutar entre Sentido Horario y Anti-Horario
-for(int i=1;i<=6;i++){     // Permutar las Caras que se van a girar
-op=j; cara=i; 
-cube.copiar();        // GUARDAR ESTADO ANTERIOR
-cube.rotar_cara_interna(op,count,cara); 
-cube.rotar_caras_externas(op,cara);
-if (cube.comprobar()==true){ /// Comprueba si se llego a una solucion
-if(count<Mpasos){ /// si se llego a una solucion y es menor a la actual la guarda y modifica el contador
-Mpasos=count;                
-guardar(cube,count);
-}}
-count++; // INCREMENTAR PASOS
-if (count<Mpasos){ // Repite el backtraking el numero de pasos maximos o el numero de pasos de la ultima Solucion
-resolver(op,count,cara,cube,Mpasos);} //BACKTRAKING
-count--;  // DISMINUIR PASOS
-cube.anterior(); // VOLVER AL ESTADO ANTERIOR
-}}
+void Mresolver(int op, int count, int cara, Tcubo cube, int prueba){
+
+cube.rotar_cara_interna(op,count,cara);
+cube.rotar_caras_externas(op,cara);    
+count++;
+cube.copiar();
+cout<<endl;
+cube.setdatos();
+if(prueba==0){
+cara=6;
+Mresolver(op,count,cara,cube,prueba+1);
+}
+if (cube.comprobar()==true){
+comparar(cube,count);
+}
+cube.copiar();
+cout<<endl;
+cube.setdatos();
+count--;
 }
 
-int main(){ 
-Tcubo cube;
-int op, count=0, cara;
-cube.getdatos(); // Obtener Datos de entrada 
-resolver(op,count,cara,cube,Mpasos); // FUNCION BACKTRAKING
-cout<<Mpasos+1<<endl; // NUMERO DE PASOS
-mejor_solucion(); // SALIDA  
+
+
+void resolver(int op, int count, int cara, Tcubo cube, int prueba){
+
+for(int i=1;i<=6;i++){     
+cara=i; 
+cube.copiar();
+cube.rotar_cara_interna(op,count,cara);
+cube.rotar_caras_externas(op,cara);
+
+if (cube.comprobar()==true){
+
+comparar(cube,count);
 }
+count++;    
+if (count<6){
+cout<<count;    
+resolver(op,count,cara,cube,prueba);}
+count--;
+cube.anterior();
+}
+
+
+}
+
+int main(){
+Tcubo cube;
+int op, count=0, cara, prueba=0;
+op=0; cara=6;
+//cube.getdatos();
+cube.predefinido();
+cube.copiar();
+cube.setdatos();
+resolver(op,count,cara,cube,prueba);
+mejor_solucion();
+  system("PAUSE");
+return EXIT_SUCCESS;
+}
+

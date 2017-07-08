@@ -1,7 +1,9 @@
 #include <iostream>
+#include <fstream>
 using namespace std;
-class Tcubo{   ///Declaracion de Clases
+class Tcubo{
 private:
+
 class cubo{
 private:
 char R[3][3]; //FRONTAL
@@ -12,14 +14,17 @@ char W[3][3];   //SUPERIOR
 char O[3][3];   //TRASERA}
 friend class Tcubo;
 };
-cubo T; // Cubo Auxiliar para guardar el estado anterior
-cubo in; //Cubo inicial
+
+cubo T;
+cubo in;
 int a;
 char mov[100][2];
 int cont_mov_mejor;
 public:
 
-void getdatos(){ // OBTENER DATOS DE ENTRADA
+
+//////////////////////////////////////////////////////////////////////////
+void Tcubo::getdatos(){ // OBTENER DATOS DE ENTRADA
 int i,j;
 
 for (i=0;i<=2;i++){
@@ -53,7 +58,7 @@ for (i=0;i<=2;i++){
     }}
 }
 //////////////////////////////////////////////////////////////////////////
-void copiar(){ // GUARDAR ESTADO ANTERIOR DEL CUBO EN UN AUXILIAR
+void Tcubo::copiar(){ // GUARDAR ESTADO ANTERIOR DEL CUBO EN UN AUXILIAR
 int i,j;
 for (i=0;i<=2;i++){
   for (j=0;j<=2;j++){   
@@ -81,7 +86,7 @@ for (i=0;i<=2;i++){
     }}     
 }
 
-void anterior(){ // VOLVER A ESTADO ANTERIOR DEL CUBO
+void Tcubo::anterior(){ // VOLVER A ESTADO ANTERIOR DEL CUBO
 int i,j;
 for (i=0;i<=2;i++){
   for (j=0;j<=2;j++){   
@@ -109,8 +114,9 @@ for (i=0;i<=2;i++){
     }}     
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-void rotar_cara_interna(int op, int count, int cara){ //ROTAR ALREDEDOR DEL CENTRO DE LA CARA
+///////////////////////////////////////////////
+
+void Tcubo::rotar_cara_interna(int op, int count, int cara){ //ROTAR ALREDEDOR DEL CENTRO DE LA CARA
 int auxi=2, auxj=0, i, j;
 char aux[3][3];
 if(cara==1){
@@ -326,7 +332,7 @@ if(op==0){
 ////////////////////////////////////////////////////
 }
           }
-void rotar_caras_externas(int op, int cara){ // ROTAR LADOS DE LA CARA
+void Tcubo::rotar_caras_externas(int op, int cara){ // ROTAR LADOS DE LA CARA
 int i, j=2;
 char aux[3][3];
 if(cara==1){    
@@ -518,7 +524,7 @@ j=2;
 }
      }
      
-bool  comprobar(){ //VER SI ES SOLUCION
+bool Tcubo::comprobar(){ //VER SI ES SOLUCION
 int i,j;
 a++;
 for (i=0;i<=2;i++){
@@ -545,14 +551,15 @@ for (i=0;i<=2;i++){
 return true;
      }
 
-char getmov(int i, int j){char a; a=mov[i][j]; return a;}
-    
+char Tcubo::getmov(int i, int j){char a; a=mov[i][j]; return a;}
+int Tcubo::getcont_mov_mejor(){ return cont_mov_mejor; }     
+void Tcubo::setcont_mov_mejor(int cont){ cont_mov_mejor=cont; }      
 };
 /////////////////////////////////////////////////////
-char mov_mejor[6][2];
-int Mpasos=6;
 
-void  guardar(Tcubo cube,int cont){ ///////// GUARDAR LOS MOVIMIENTOS PARA LLEGAR A LA SOLUCION
+char mov_mejor[100][2];
+int Mpasos=20;
+void  guardar(Tcubo cube,int cont){
 int i,j;
  for (i=0;i<=cont;i++){  
   for (j=0;j<2;j++){      
@@ -563,39 +570,57 @@ int i,j;
 
 }
 /////////////////////////////////////////////////////////
-void mejor_solucion(){   /// ESCRIBIR LOS MOVIMIENTOS COMO UNA SALIDA
+void mejor_solucion(){
 int i;
+cout<<endl;
+cout<<"Movimientos";
+cout<<endl;
  for (i=0;i<=Mpasos;i++){  
-    cout<<mov_mejor[i][0]<<" "<<mov_mejor[i][1];
+    cout<<mov_mejor[i][0];
+    cout<<mov_mejor[i][1];
     cout<<endl;
     }
     }
-//////////////////////////////////////////////////////////////
-void resolver(int op, int count, int cara, Tcubo cube, int &Mpasos){ // IMPLEMENTACION DE FUNCION BACKTRAKING
-for(int j=0;j<=1;j++){ // Permutar entre Sentido Horario y Anti-Horario
-for(int i=1;i<=6;i++){     // Permutar las Caras que se van a girar
+//////////////////////////////////////////////////////////////k
+
+
+void resolver(int op, int count, int cara, Tcubo cube, int &Mpasos){
+
+for(int j=0;j<=1;j++){ 
+for(int i=1;i<=6;i++){     
 op=j; cara=i; 
-cube.copiar();        // GUARDAR ESTADO ANTERIOR
-cube.rotar_cara_interna(op,count,cara); 
+cube.copiar();
+cube.rotar_cara_interna(op,count,cara);
 cube.rotar_caras_externas(op,cara);
-if (cube.comprobar()==true){ /// Comprueba si se llego a una solucion
-if(count<Mpasos){ /// si se llego a una solucion y es menor a la actual la guarda y modifica el contador
+if (cube.comprobar()==true){
+if(count<Mpasos){
 Mpasos=count;                
 guardar(cube,count);
 }}
-count++; // INCREMENTAR PASOS
-if (count<Mpasos){ // Repite el backtraking el numero de pasos maximos o el numero de pasos de la ultima Solucion
-resolver(op,count,cara,cube,Mpasos);} //BACKTRAKING
-count--;  // DISMINUIR PASOS
-cube.anterior(); // VOLVER AL ESTADO ANTERIOR
-}}
+count++;
+if (count<Mpasos){
+cout<<count;    
+resolver(op,count,cara,cube,Mpasos);}
+count--;
+cube.anterior();
+}
 }
 
-int main(){ 
-Tcubo cube;
-int op, count=0, cara;
-cube.getdatos(); // Obtener Datos de entrada 
-resolver(op,count,cara,cube,Mpasos); // FUNCION BACKTRAKING
-cout<<Mpasos+1<<endl; // NUMERO DE PASOS
-mejor_solucion(); // SALIDA  
 }
+
+int main(){
+Tcubo cube;
+int op, count=0, cara, prueba=0;
+int datos[3][3];
+
+cube.getdatos(); // Obtener Datos de entrada 
+
+
+cube.copiar();
+
+resolver(op,count,cara,cube,Mpasos);
+mejor_solucion();
+  system("PAUSE");
+return EXIT_SUCCESS;
+}
+
