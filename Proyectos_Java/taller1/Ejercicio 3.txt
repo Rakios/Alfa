@@ -1,0 +1,132 @@
+package taller1;
+import java.io.*; 
+
+public class Autenticacion {
+    String login;
+    String clave;
+    
+
+  
+    public boolean verificarLogin(String login){
+    String loginreal="";
+    String clavereal="";
+    int con=0;
+    
+      File archivo = null;
+      FileReader fr = null;
+      BufferedReader br = null;
+      
+ 
+      try {
+
+         archivo = new File ("C:\\login_claves.txt");
+         fr = new FileReader (archivo);
+         br = new BufferedReader(fr);
+         String linea;
+         while((linea=br.readLine())!=null){
+         
+         loginreal=linea;
+         linea=br.readLine();
+         clavereal=linea;
+
+         
+         if(loginreal.equalsIgnoreCase(login)){
+         return true; 
+         }
+         
+      }
+      }catch(Exception e){
+         e.printStackTrace();
+      }finally{
+
+         try{                    
+            if( null != fr ){   
+               fr.close();     
+            }                  
+         }catch (Exception e2){ 
+            e2.printStackTrace();
+         }
+      }
+   return false;
+}
+
+
+
+public boolean verificarClave(String login, String clave){
+    String loginreal="";
+    String clavereal="";
+
+      File archivo = null;
+      FileReader fr = null;
+      BufferedReader br = null;
+      
+ 
+      try {
+
+         archivo = new File ("C:\\login_claves.txt");
+         fr = new FileReader (archivo);
+         br = new BufferedReader(fr);
+         String linea;
+         while((linea=br.readLine())!=null){
+         
+         loginreal=linea;
+         linea=br.readLine();
+         clavereal=linea;
+         
+         if(loginreal.equalsIgnoreCase(login)){
+             if(clavereal.equalsIgnoreCase(clave)){
+             return true; 
+         }
+      }
+         }
+      }catch(Exception e){
+         e.printStackTrace();
+      }finally{
+
+         try{                    
+            if( null != fr ){   
+               fr.close();     
+            }                  
+         }catch (Exception e2){ 
+            e2.printStackTrace();
+         }
+      }
+   return false;
+}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+package taller1;
+
+import java.util.*;
+
+public class Cliente {
+
+    public static void main(String[] args) {
+    String inlogin;
+    String inclave;
+    
+    Autenticacion Auten = new Autenticacion();
+        boolean b;
+        Scanner rd= new Scanner(System.in);
+        System.out.println("Login: ");
+        Scanner in= new Scanner(System.in);
+         inlogin = in.nextLine();
+         b=Auten.verificarLogin(inlogin);
+            if(b==true){
+            System.out.println("Clave: ");
+            inclave = in.nextLine();
+            b=Auten.verificarClave(inlogin,inclave);
+               if(b==true){
+                System.out.println("autenticación exitosa");    
+                }else{
+                System.out.println("Clave Invalida");    
+               }
+              
+    }else{
+                System.out.println("Login Invalido");
+            }
+    
+}
+}
